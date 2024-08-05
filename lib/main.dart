@@ -8,27 +8,23 @@ import 'package:intl/intl.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'provider/todo_provider.dart';
 
-// Main.dart - main UI Application of the App
-
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => TodoProvider()),
-      ],
-      child: const MyApp(),
-    )
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => TodoProvider()),
+        ],
+        child: const MyApp(),
+      )
   );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,7 +49,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch the TODOs from both Firebase and the API when the screen is first loaded
     Provider.of<TodoProvider>(context, listen: false).fetchTodos();
   }
 
@@ -85,7 +80,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
               itemBuilder: (context, index) {
                 final todo = todoProvider.todos[index];
                 return Padding(
-                  padding: EdgeInsets.only(top: index == 0 ? 25.0 : 0.0), // Add space before the first item
+                  padding: EdgeInsets.only(top: index == 0 ? 25.0 : 0.0),
                   child: ListTile(
                     title: Text(todo.todo ?? ''),
                     subtitle: Row(
@@ -98,7 +93,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       ],
                     ),
                     trailing: Row(
-                      mainAxisSize: MainAxisSize.min, // Shrink the row to fit its children
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           icon: const Icon(Icons.edit),
@@ -177,14 +172,14 @@ class _TodoListScreenState extends State<TodoListScreen> {
             TextButton(
               child: const Text('No'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
               child: const Text('Confirm'),
               onPressed: () {
                 todoProvider.deleteCheckedTodos();
-                Navigator.of(context).pop(); // Close the dialog after deletion
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -193,5 +188,3 @@ class _TodoListScreenState extends State<TodoListScreen> {
     );
   }
 }
-
-
